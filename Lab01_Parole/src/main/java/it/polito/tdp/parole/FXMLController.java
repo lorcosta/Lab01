@@ -45,19 +45,27 @@ public class FXMLController {
     	String selezionato = txtResult.getSelectedText();
     	if(selezionato==null) return;
     	elenco.cancellaParola(selezionato);
-    	
-		txtParola.clear();
-		    	
-		String result = "";
-		    	
+		txtParola.clear();    	
+		String result = "";    	
 		for(String s : elenco.getElenco()) {
 			result += s + "\n";
-		}
-		    	
+		}    	
 		txtResult.setText(result);
-		
 		long time = System.nanoTime()-start;
-		txtTime.setText("Time: "+time);
+		txtTime.setText("Time LinkedList: "+time);
+		
+		start = System.nanoTime();
+    	selezionato = txtResult.getSelectedText();
+    	if(selezionato==null) return;
+    	elenco.cancellaParolaA(selezionato);
+		txtParola.clear();    	
+		result = "";    	
+		for(String s : elenco.getElencoA()) {
+			result += s + "\n";
+		}    	
+		txtResult.setText(result);
+		time = System.nanoTime()-start;
+		txtTime.setText("Time ArrayList: "+time);
 		    	
     }
 
@@ -68,7 +76,6 @@ public class FXMLController {
     	if(parola.isBlank() || parola.isEmpty()) {
     		txtParola.setText("E' necessario aggiungere almeno una parola, premere Reset per inserire una nuova parola.");
     		return;
-    		
     	}
     	elenco.addParola(parola);
     	txtParola.clear();
@@ -79,19 +86,40 @@ public class FXMLController {
     	}  
     	txtResult.setText(ritorno);
     	long time= System.nanoTime()-start;
-    	txtTime.setText("Time: "+time);
+    	txtTime.setText("Time LinkedList: "+time);
+    	
+    	start= System.nanoTime();
+    	parola= txtParola.getText();
+    	if(parola.isBlank() || parola.isEmpty()) {
+    		txtParola.setText("E' necessario aggiungere almeno una parola, premere Reset per inserire una nuova parola.");
+    		return;
+    	}
+    	elenco.addParolaA(parola);
+    	txtParola.clear();
+    	ritorno="";
+    	for(String s: elenco.getElencoA()) {
+    		if(ritorno=="") ritorno+=s;
+    		else ritorno+="\n"+s;
+    	}  
+    	txtResult.setText(ritorno);
+    	time= System.nanoTime()-start;
+    	txtTime.setText("Time ArrayList: "+time);
     	
     }
 
     @FXML
     void doReset(ActionEvent event) {
     	long start = System.nanoTime();
-
     	elenco.reset();
     	txtResult.clear();
-    	
     	long time = System.nanoTime()-start;
-		txtTime.setText("Time: "+time);
+		txtTime.setText("Time LinkedList: "+time);
+		
+		start = System.nanoTime();
+    	elenco.resetA();
+    	txtResult.clear();
+    	time = System.nanoTime()-start;
+		txtTime.setText("Time ArrayList: "+time);
 		
     }
 
